@@ -5,6 +5,7 @@ from web_server import serve
 
 client = discord.Client()
 keenan = ["Tovarish#7985","carnage_roger#8850","carnage_roger","Tovarish","Comrade General Товарищ"]
+keenan_at = ["296310218982162434","145693628902146048"]
 ERROR_CODE = 'ERROR'
 
 def translate(text,to_lang)->str:
@@ -32,11 +33,11 @@ async def on_message(message):
     print('[BLOCK]')
     print(f'[LOG] Full text recieved: {message_text}')    
     
-    for user in keenan:
-      if f'@{user} ' in message_text:
-        message_text = message_text.replace(f'@{user} ','')
-      elif f'@{user}' in message_text:
-        message_text = message_text.replace(f'@{user}','')
+    for user in keenan_at:
+      if f'<@!{user}> ' in message_text:
+        message_text = message_text.replace(f'<@!{user}> ','')
+      elif f'<@!{user}>' in message_text:
+        message_text = message_text.replace(f'<@!{user}>','')
     try:
       detected_language = detect_lang(message_text)
     except exceptions.TranslatorError:
