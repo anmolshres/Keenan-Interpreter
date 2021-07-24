@@ -9,7 +9,10 @@ ERROR_CODE = 'ERROR'
 
 def translate(text,to_lang)->str:
   text_blob = TextBlob(text)
-  translation = text_blob.translate(to=to_lang)
+  try:
+    translation = text_blob.translate(to=to_lang)
+  except exceptions.NotTranslated:
+    translation = 'Sorry, original message was not translated!'
   return str(translation)
 
 def detect_lang(text):
@@ -31,7 +34,7 @@ async def on_message(message):
     except exceptions.TranslatorError:
       detected_language = ERROR_CODE      
     print(f'[LOG] Detected language: {detected_language}')
-    if detected_language != "en" and str(message.author) in keenan:
+    if detected_language != "en" or detected_language == ERROR_CODE and str(message.author) in keenan:
       if detected_language != ERROR_CODE:
         translated_text = translate(text=message_text,to_lang='en')
         await message.channel.send(f'The detected language is {detected_language} from {message.author} and its English translation is ```{translated_text}```')
