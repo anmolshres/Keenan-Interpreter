@@ -38,6 +38,11 @@ async def on_message(message):
         message_text = message_text.replace(f'<@!{user}> ','')
       elif f'<@!{user}>' in message_text:
         message_text = message_text.replace(f'<@!{user}>','')
+      elif f'<@{user}> ' in message_text:
+        message_text = message_text.replace(f'<@{user}> ','')
+      elif f'<@{user}>' in message_text:
+        message_text = message_text.replace(f'<@{user}>','')
+      
     try:
       detected_language = detect_lang(message_text)
     except exceptions.TranslatorError:
@@ -48,14 +53,14 @@ async def on_message(message):
         message_text = message_text[5:]
         translated_text = translate(text=message_text,to_lang='ru')
         await message.channel.send(f'```{translated_text}```')
-        print(f'[LOG] Text that was translated: {message_text}')
+        print(f'[LOG] Text was translated from: {message_text} to: {translated_text}')
       else:
         await message.channel.send(f'```Sorry, but text to be translated needs to be at least 3 characters long.```')
     elif (detected_language != "en" or detected_language == ERROR_CODE) and str(message.author) in keenan:
       if detected_language != ERROR_CODE:
         translated_text = translate(text=message_text,to_lang='en')
         await message.channel.send(f'```{translated_text}```')
-        print(f'[LOG] Text that was translated: {message_text}')
+        print(f'[LOG] Text was translated from: {message_text} to: {translated_text}')
       else:
         await message.channel.send(f'```Sorry, but text to be translated needs to be at least 3 characters long.```')
       
